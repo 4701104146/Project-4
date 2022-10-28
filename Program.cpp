@@ -783,10 +783,15 @@ void Program::manageItem()
 {
     system("cls");
     NEWLINE(TOP);
+    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
     SPACE(NUB2); cout << "*************************************************" << '\n';
-    SPACE(NUB2); cout << "***              Quan Ly Hang Hoa            ****" << '\n';
+    SPACE(NUB2); cout << "***";
+    SetColor(eColor::BLACK, eColor::LIGHT_GREEN);
+    cout << "              Quan Ly Hang Hoa            ";
+    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
+    cout << "***" << '\n';
     SPACE(NUB2); cout << "*************************************************" << '\n';
-
+    SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
     NEWLINE(BOTTOM);
     SPACE(NUB2); cout << "1. Them hang hoa moi.\n";
     SPACE(NUB2); cout << "2. Xoa hang hoa.\n";
@@ -1071,20 +1076,23 @@ int Program::login()
 void Program::menuManage()
 {
     system("cls");
-
     NEWLINE(TOP);
-    SetColor(eColor::BLACK, eColor::WHITE);
+    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
     SPACE(NUB2); cout << "*************************************************" << '\n';
-    SPACE(NUB2); cout << "***                Menu Quan Ly              ****" << '\n';
+    SPACE(NUB2); cout << "***";
+    SetColor(eColor::BLACK, eColor::LIGHT_GREEN);
+    cout << "                Menu Quan Ly               ";
+    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
+    cout << "***" << '\n';
     SPACE(NUB2); cout << "*************************************************" << '\n';
-
+    SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
     NEWLINE(BOTTOM);
     SPACE(NUB2); cout << "1. Xu ly don hang." << '\n';
     SPACE(NUB2); cout << "2. Quan ly hang hoa." << '\n';
     NEWLINE(BOTTOM);
 
 
-    SPACE(NUB2); cout << "An \"ESC\" de thoat \"p\" de quay lai.";
+    SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai.";
 	
     while (_cKeyPress = _getch())
     {
