@@ -14,7 +14,7 @@ class Account
     string TaiKhoan;
     string MatKhau;
 public:
-    friend ifstream& operator >> (ifstream& is, Account& t);
+    friend ifstream& operator >> (ifstream& in, Account& t);
 
 
     bool operator == (const Account& t);
@@ -25,9 +25,9 @@ public:
     string getMK();
     void setMK(string MK);
 };
-ifstream& operator >> (ifstream& is, Account& t) {
-    is >> t.TaiKhoan >> t.MatKhau;
-    return is;
+ifstream& operator >> (ifstream& in, Account& t) {
+    in >> t.TaiKhoan >> t.MatKhau;
+    return in;
 }
 bool Account::operator == (const Account& t) {
     return this->TaiKhoan == t.TaiKhoan && this->MatKhau == t.MatKhau;
@@ -324,9 +324,9 @@ namespace filePath {
 
     // File hàng hóa tương tự file admin.
     // Thông tin trong file phải điền theo thứ tự
-    /*
-            (Mã hàng)~(Tên Hàng)~(Nơi sản xuất)~(Mau sắc)~(Giá cả)~(NgayNhapKho)~(Số lượng)
-    */
+    
+    //        (Mã hàng)~(Tên Hàng)~(Nơi sản xuất)~(Mau sắc)~(Giá cả)~(NgayNhapKho)~(Số lượng)
+    
 
     const string g_FileHangHoa = "C:\\HangHoa.txt";
 
@@ -377,7 +377,7 @@ public:
 
     // ham bo tro
     bool orderSuccess(Order& o);
-    bool login();
+    int login();
 
     // update Item có mã (code)
     void updateItem(const string& code, int product);
@@ -697,12 +697,13 @@ void Program::manage()
                 manage();
             }
             else {
-                menu();
+                exit(0);
             }
         }     
     }
 
 }
+
 // quanLy//
 void Program::menuManage()
 {
@@ -1078,4 +1079,6 @@ int Program::login()
         }
         return 1;
     }
+
+
 }
