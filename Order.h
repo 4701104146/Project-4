@@ -6,22 +6,22 @@ class Order
 
 {
     static int  _SERI;
-    int _iSeri = 1;
-    int _iPrice = 0;
-    string _strCustomerName;
-    string _strCustomerAdress;
-    string _strCustomerPhone;
-    string _strDay;
+    int _iMa = 1;
+    int _iGiaTien = 0;
+    string _strTen;
+    string _strDiaChi;
+    string _strSDT;
+    string _strNgay;
 public:
-    vector<string> sizeCodeItems;
-    vector<int> sizeProducts;
+    vector<string> SizeMaCode;
+    vector<int> SizeSanPham;
 
-    int getCode();
-    int getPrice();
-    string getCustomer();
-    string getCustomerAdress();
-    string getPhone();
-    string getDay();
+    int getMa();
+    int getGiaTien();
+    string getTen();
+    string getDiaChi();
+    string getSDT();
+    string getNgay();
 
 
 
