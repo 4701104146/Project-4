@@ -84,7 +84,7 @@ public:
     friend istream& operator >> (istream& is, Item& i);
 
 
-    string getCode();
+    string GetMa();
     int getNumber();
     string getName();
     void update(int products);
@@ -92,7 +92,7 @@ public:
     string getProductionPlace();
     string getColor();
     string getDay();
-    int getPrice();
+    int GetGiaTien();
     int getProduct();
 };
 ifstream& operator >> (ifstream& is, Item& h)
@@ -138,8 +138,8 @@ ifstream& operator >> (ifstream& is, Item& h)
 }
 ofstream& operator << (ofstream& os, Item& h)
 {
-    os << h.getCode() << '~' << h.getName() << '~' << h.getProductionPlace() << '~' << h.getColor()
-        << '~' << h.getPrice() << '~' << h.getDay() << '~' << h.getProduct();
+    os << h.GetMa() << '~' << h.getName() << '~' << h.getProductionPlace() << '~' << h.getColor()
+        << '~' << h.GetGiaTien() << '~' << h.getDay() << '~' << h.getProduct();
     return os;
 }
 
@@ -179,7 +179,7 @@ istream& operator >> (istream& is, Item& i)
 }
 
 
-string Item::getCode()
+string Item::GetMa()
 {
     return _strCode;
 }
@@ -211,7 +211,7 @@ string Item::getDay()
 {
     return _strDayIn;
 }
-int Item::getPrice()
+int Item::GetGiaTien()
 {
     return _iPrice;
 }
@@ -223,22 +223,22 @@ class Order
 
 {
     static int  _SERI;
-    int _iSeri = 1;
-    int _iPrice = 0;
-    string _strCustomerName;
-    string _strCustomerAdress;
-    string _strCustomerPhone;
-    string _strDay;
+    int _iMa = 1;
+    int _iGiaTien = 0;
+    string _strTen;
+    string _strDiaChi;
+    string _strSDT;
+    string _strNgay;
 public:
-    vector<string> szCodeItems;
-    vector<int> szProducts;
+    vector<string> SizeMaCode;
+    vector<int> SizeSanPham;
 
-    int getCode();
-    int getPrice();
-    string getCustomer();
-    string getCustomerAdress();
-    string getPhone();
-    string getDay();
+    int GetMa();
+    int GetGiaTien();
+    string getTen();
+    string getDiaChi();
+    string getSDT();
+    string getNgay();
 
 
 
@@ -247,21 +247,21 @@ public:
 };
 int Order::_SERI = 0;
 
-istream& operator >> (istream& is, Order& o)
+istream& operator >> (istream& is, Order& order)
 {
     //NEWLINE(TOP);
     SPACE(NUB2);
-    cout << "Ten khach hang:             "; getline(is, o._strCustomerName);
+    cout << "Ten khach hang:             "; getline(is, order._strTen);
     SPACE(NUB2);
-    cout << "Dia chi khach hang:         "; getline(is, o._strCustomerAdress);
+    cout << "Dia chi khach hang:         "; getline(is, order._strDiaChi);
     SPACE(NUB2);
-    cout << "So dien thoai:              "; is >> o._strCustomerPhone;
+    cout << "So dien thoai:              "; is >> order._strSDT;
     SPACE(NUB2);
-    cout << "Ngay dat hang:              "; is >> o._strDay;
+    cout << "Ngay dat hang:              "; is >> order._strNgay;
     SPACE(NUB2);
     cout << "Nhap so loai san pham mua:  ";
-    int iNumbers;
-    cin >> iNumbers;
+    int SLSanPham;
+    cin >> SLSanPham;
     //i = iNub;
     NEWLINE(2);
     SPACE(NUB); cout << "***Nhap ma tung san pham***\n\n";
@@ -270,49 +270,49 @@ istream& operator >> (istream& is, Order& o)
     {
         int i = 0;
         int iProducts;
-        while (i < iNumbers)
+        while (i < SLSanPham)
         {
             std::cin.ignore(256, '\n');
 
             SPACE(NUB + NUB); cout << "Ma san pham thu " << i + 1 << ": ";
             is >> strCode;
-            o.szCodeItems.push_back(strCode);
+            order.SizeMaCode.push_back(strCode);
             SPACE(NUB * 2); cout << "So luong san pham dat mua: ";
             is >> iProducts;
-            o.szProducts.push_back(iProducts);
+            order.SizeSanPham.push_back(iProducts);
             i++;
         }
     }
-    o._iSeri = Order::_SERI;
+    order._iMa = Order::_SERI;
     std::cin.ignore(256, '\n');
 
     return is;
 
 }
 
-int Order::getCode()
+int Order::GetMa()
 {
-    return _iSeri;
+    return _iMa;
 }
-int Order::getPrice()
+int Order::GetGiaTien()
 {
-    return _iPrice;
+    return _iGiaTien;
 }
-string Order::getCustomer()
+string Order::getTen()
 {
-    return _strCustomerName;
+    return _strTen;
 }
-string Order::getCustomerAdress()
+string Order::getDiaChi()
 {
-    return _strCustomerAdress;
+    return _strDiaChi;
 }
-string Order::getPhone()
+string Order::getSDT()
 {
-    return _strCustomerPhone;
+    return _strSDT;
 }
-string Order::getDay()
+string Order::getNgay()
 {
-    return _strDay;
+    return _strNgay;
 }
 enum class eColor;
 void GoTo(SHORT posX, SHORT posY);
@@ -324,9 +324,9 @@ namespace filePath {
 
     // File hàng hóa tương tự file admin.
     // Thông tin trong file phải điền theo thứ tự
-    
+
     //        (Mã hàng)~(Tên Hàng)~(Nơi sản xuất)~(Mau sắc)~(Giá cả)~(NgayNhapKho)~(Số lượng)
-    
+
 
     const string g_FileHangHoa = "C:\\HangHoa.txt";
 
@@ -631,17 +631,17 @@ void Program::order()
     system("cls");
 
     NEWLINE(TOP);
-    Order o;
+    Order order;
     //cin.ignore(32676, '\n');
 
-    cin >> o;
+    cin >> order;
     NEWLINE(3);
 
-    if (orderSuccess(o))
+    if (orderSuccess(order))
     {
         NEWLINE(5);
         SPACE(NUB2); cout << "Don hang dang cho xu ly.";
-        szOrders.push(o);
+        szOrders.push(order);
     }
     else
     {
@@ -699,7 +699,7 @@ void Program::manage()
             else {
                 exit(0);
             }
-        }     
+        }
     }
 
 }
@@ -748,8 +748,8 @@ void Program::loadingOrder()
         if (orderSuccess(szOrders.front()))
         {
             writeToFile(szOrders.front(), g_FileDonHang, true);
-            for (size_t j = 1; j < szOrders.front().szCodeItems.size(); j++)
-                updateItem(szOrders.front().szCodeItems[j], -szOrders.front().szProducts[j]);
+            for (size_t j = 1; j < szOrders.front().SizeMaCode.size(); j++)
+                updateItem(szOrders.front().SizeMaCode[j], -szOrders.front().SizeSanPham[j]);
         }
         else
             writeToFile(szOrders.front(), g_FileDonHang, false);
@@ -771,7 +771,7 @@ void Program::loadingOrder()
             loadingOrder();
     }
 }
-void Program::writeToFile(Order& o, const string& path, bool state)
+void Program::writeToFile(Order& order, const string& path, bool state)
 {
     ofstream f(g_FileDonHang, std::ios::app);
     if (f)
@@ -780,13 +780,13 @@ void Program::writeToFile(Order& o, const string& path, bool state)
         //cout << "Da tien hanh ghi file.\n";
         f << "======DON HANG " << (state ? "THANH CONG" : "THAT BAI") << " ======\n";
         f << "Ma don: " << stt << '\n';
-        f << "Ten khach hang: " << o.getCustomer() << '\n';
-        f << "Dia chi khach hang: " << o.getCustomerAdress() << '\n';
-        f << "Dien thoai: " << o.getPhone() << '\n';
-        f << "Ngay mua: " << o.getDay() << '\n';
+        f << "Ten khach hang: " << order.getTen() << '\n';
+        f << "Dia chi khach hang: " << order.getDiaChi() << '\n';
+        f << "Dien thoai: " << order.getSDT() << '\n';
+        f << "Ngay mua: " << order.getNgay() << '\n';
         f << "\n***Cac san pham dat mua***" << '\n';
-        for (size_t i = 0; i < o.szCodeItems.size(); i++)
-            f << "   Ma hang hoa " << o.szCodeItems[i] << " voi " << o.szProducts[i] << " so luong.\n";
+        for (size_t i = 0; i < order.SizeMaCode.size(); i++)
+            f << "   Ma hang hoa " << order.SizeMaCode[i] << " voi " << order.SizeMaCode[i] << " so luong.\n";
         f << "\n==========================================================================" << endl;
 
 
@@ -896,7 +896,7 @@ void Program::removeItem()
     bool success = false;
     for (size_t i = 0; i < szItems.size(); i++)
     {
-        if (szItems[i].getCode() == strCode)
+        if (szItems[i].GetMa() == strCode)
         {
             szItems.erase(szItems.begin() + i);
             success = true;
@@ -954,7 +954,7 @@ void Program::updateItem()
 
     bool success = false;
     for (size_t i = 0; i < szItems.size(); i++)
-        if (szItems[i].getCode() == strCode)
+        if (szItems[i].GetMa() == strCode)
         {
             success = true;
             bAsc ? szItems[i].update(iProducts) : szItems[i].update(-iProducts);
@@ -981,12 +981,12 @@ void Program::updateItem()
 //____________________________
 bool Program::orderSuccess(Order& o)
 {
-    for (size_t i = 0; i < o.szCodeItems.size(); i++)
+    for (size_t i = 0; i < o.SizeMaCode.size(); i++)
     {
-        if (!foundItem(o.szCodeItems[i]))
+        if (!foundItem(o.SizeMaCode[i]))
             return false;
         else
-            if (o.szProducts[i] <= 0 && greaterMaxProducts(o.szCodeItems[i], o.szProducts[i]))
+            if (o.SizeSanPham[i] <= 0 && greaterMaxProducts(o.SizeMaCode[i], o.SizeSanPham[i]))
                 return false;
     }
     return true;
@@ -994,20 +994,20 @@ bool Program::orderSuccess(Order& o)
 bool Program::foundItem(const string& code)
 {
     for (size_t i = 0; i < szItems.size(); i++)
-        if (code == szItems[i].getCode())
+        if (code == szItems[i].GetMa())
             return true;
     return false;
 }
 bool Program::greaterMaxProducts(const string& code, int n) {
     for (size_t i = 0; i < szItems.size(); i++)
-        if (code == szItems[i].getCode())
+        if (code == szItems[i].GetMa())
             return szItems[i].getNumber() <= n;
     return false;
 }
 void Program::updateItem(const string& code, int product)
 {
     for (size_t i = 0; i < szItems.size(); i++)
-        if (code == szItems[i].getCode())
+        if (code == szItems[i].GetMa())
         {
             szItems[i].update(product);
             return;
@@ -1068,13 +1068,13 @@ int Program::login()
         NEWLINE(6);
         return 2;
     }
-    else if(!success)
+    else if (!success)
     {
         (soLanNhap > 0) ? soLanNhap-- : soLanNhap;
         SPACE(NUB2); cout << "Dang nhap khong thanh cong. \n";
         SPACE(NUB2); cout << "Ban con " << soLanNhap << " lan thu.";
         NEWLINE(6);
-        if (!success&&soLanNhap == 0) {
+        if (!success && soLanNhap == 0) {
             return 0;
         }
         return 1;
