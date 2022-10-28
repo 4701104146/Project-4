@@ -6,17 +6,17 @@ istream& operator >> (istream& is, Order& order)
 {
     //NEWLINE(TOP);
     SPACE(NUB2);
-    cout << "Ten khach hang:             "; getline(is, order._strCustomerName);
+    cout << "Ten khach hang:             "; getline(is, order._strTen);
     SPACE(NUB2);
-    cout << "Dia chi khach hang:         "; getline(is, order._strCustomerAdress);
+    cout << "Dia chi khach hang:         "; getline(is, order._strDiaChi);
     SPACE(NUB2);
-    cout << "So dien thoai:              "; is >> order._strCustomerPhone;
+    cout << "So dien thoai:              "; is >> order._strSDT;
     SPACE(NUB2);
-    cout << "Ngay dat hang:              "; is >> order._strDay;
+    cout << "Ngay dat hang:              "; is >> order._strNgay;
     SPACE(NUB2);
     cout << "Nhap so loai san pham mua:  ";
-    int iNumbers;
-    cin >> iNumbers;
+    int SLSanPham;
+    cin >> SLSanPham;
     //i = iNub;
     NEWLINE(2);
     SPACE(NUB); cout << "***Nhap ma tung san pham***\n\n";
@@ -24,48 +24,48 @@ istream& operator >> (istream& is, Order& order)
     string strCode;
     {
         int i = 0;
-        int iProducts;
-        while (i < iNumbers)
+        int SanPham;
+        while (i < SLSanPham)
         {
             std::cin.ignore(256, '\n');
 
             SPACE(NUB + NUB); cout << "Ma san pham thu " << i + 1 << ": ";
             is >> strCode;
-            order.sizeCodeItems.push_back(strCode);
+            order.SizeMaCode.push_back(strCode);
             SPACE(NUB * 2); cout << "So luong san pham dat mua: ";
-            is >> iProducts;
-            order.sizeProducts.push_back(iProducts);
+            is >> SanPham;
+            order.SizeSanPham.push_back(SanPham);
             i++;
         }
     }
-    order._iSeri = Order::_SERI;
+    order._iMa = Order::_SERI;
     std::cin.ignore(256, '\n');
 
     return is;
 
 }
 
-int Order::getCode()
+int Order::getMa()
 {
-    return _iSeri;
+    return _iMa;
 }
-int Order::getPrice()
+int Order::getGiaTien()
 {
-    return _iPrice;
+    return _iGiaTien;
 }
-string Order::getCustomer()
+string Order::getTen()
 {
-    return _strCustomerName;
+    return _strTen;
 }
-string Order::getCustomerAdress()
+string Order::getDiaChi()
 {
-    return _strCustomerAdress;
+    return _strDiaChi;
 }
-string Order::getPhone()
+string Order::getSDT()
 {
-    return _strCustomerPhone;
+    return _strSDT;
 }
-string Order::getDay()
+string Order::getNgay()
 {
-    return _strDay;
+    return _strNgay;
 }
