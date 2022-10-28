@@ -665,12 +665,12 @@ void Program::manage()
 {
     system("cls");
     NEWLINE(TOP);
-
+    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
     SPACE(NUB2); cout << "*************************************************" << '\n';
     SPACE(NUB2); cout << "***";
     SetColor(eColor::BLACK, eColor::LIGHT_GREEN);
     cout << "               DANG NHAP HE THONG          ";
-    SetColor(eColor::BLACK, eColor::YELLOW);
+    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
     cout << "***" << '\n';
     SPACE(NUB2); cout << "*************************************************" << '\n';
     NEWLINE(BOTTOM);
@@ -682,8 +682,7 @@ void Program::manage()
 
 
 
-    bool loginSuccess = login();
-
+    int loginSuccess = login();
     SPACE(NUB2); cout << "An \"ESC\" de thoat an \"p\" de quay lai hoac an \"Enter\" de tiep tuc.";
     while (_cKeyPress = _getch())
     {
@@ -691,15 +690,19 @@ void Program::manage()
             exit(0);
         else if (_cKeyPress == 'p')
             menu();
-        else if (_cKeyPress == ENTER)
-            if (loginSuccess)
+        else if (_cKeyPress == ENTER) {
+            if (loginSuccess == 2)
                 menuManage();
-            else
+            else if (loginSuccess == 1) {
                 manage();
+            }
+            else {
+                menu();
+            }
+        }     
     }
 
 }
-
 // quanLy//
 void Program::menuManage()
 {
@@ -1009,7 +1012,7 @@ void Program::updateItem(const string& code, int product)
             return;
         }
 }
-bool Program::login()
+int Program::login()
 {
     Account myAccount;
 
@@ -1057,18 +1060,22 @@ bool Program::login()
     {
         SPACE(NUB2); cout << "Dang nhap thanh cong. ";
         NEWLINE(6);
-
-        return true;
+        return 2;
     }
-    else
+    else if (success && soLanNhap == 0) {
+        SPACE(NUB2); cout << "Dang nhap thanh cong. ";
+        NEWLINE(6);
+        return 2;
+    }
+    else if(!success)
     {
         (soLanNhap > 0) ? soLanNhap-- : soLanNhap;
         SPACE(NUB2); cout << "Dang nhap khong thanh cong. \n";
         SPACE(NUB2); cout << "Ban con " << soLanNhap << " lan thu.";
         NEWLINE(6);
-
-        return false;
+        if (!success&&soLanNhap == 0) {
+            return 0;
+        }
+        return 1;
     }
-
-
 }
