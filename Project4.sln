@@ -697,7 +697,7 @@ void Program::order()
     }
 
     NEWLINE(3);
-    SetColor(eColor::BLACK, eColor::LIGHT_RED);
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai ENTER de tiep tuc.";
 
     while (_cKeyPress = _getch())
@@ -746,8 +746,6 @@ void Program::loadingOrder()
 void Program::writeToFile(Order& o, const string& path, bool state)
 {
     ofstream f(g_FileDonHang, std::ios::app);
-    if (f)
-    {
         SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
         f << "======DON HANG " << (state ? "THANH CONG" : "THAT BAI") << " ======\n";
         f << "Ma don: " << stt << '\n';
@@ -759,12 +757,6 @@ void Program::writeToFile(Order& o, const string& path, bool state)
         for (size_t i = 0; i < o.szCodeItems.size(); i++)
             f << "   Ma hang hoa " << o.szCodeItems[i] << " voi " << o.sizeProducts[i] << " so luong.\n";
         f << "\n==========================================================================" << endl;
-
-
-    }
-    else
-        SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
-        cout << "Khong the mo file. Vui long thu lai.";
     f.close();
 }
 void Program::uploadFile(const string& path)
