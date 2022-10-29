@@ -1,3 +1,4 @@
+#include "Item.h"
 ifstream& operator >> (ifstream& in, Item& n)
 {
     string  thanhPhan = "";
