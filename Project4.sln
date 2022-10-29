@@ -174,9 +174,10 @@ istream& operator >> (istream& in, Item& i)
     SPACE(NUB2); cout << "Mau sac: ";
     getline(in, i._strMauHangHoa);
     SPACE(NUB2); cout << "Gia ca: ";
-    in >> i._iGia;
+    in>> i._iGia;
     SPACE(NUB2); cout << "Ngay nhap hang: ";
-    in >> i._strNgaySanXuat;
+    in.ignore();
+    in>> i._strNgaySanXuat;
     SPACE(NUB2); cout << "So luong: ";
     in >> i._iSoLuong;
     return in;
