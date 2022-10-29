@@ -233,7 +233,7 @@ class Order
     string _strCustomerPhone;
     string _strDay;
 public:
-    vector<string> szCodeItems;
+    vector<string> sizeCodeItems;
     vector<int> sizeProducts;
 
     int getCode();
@@ -276,7 +276,7 @@ istream& operator >> (istream& is, Order& o)
 
             SPACE(NUB + NUB); cout << "Ma san pham thu " << i + 1 << ": ";
             is >> strCode;
-            o.szCodeItems.push_back(strCode);
+            o.sizeCodeItems.push_back(strCode);
             SPACE(NUB * 2); cout << "So luong san pham dat mua: ";
             is >> iProducts;
             o.sizeProducts.push_back(iProducts);
@@ -465,12 +465,12 @@ void SetWindowSize(SHORT width, SHORT height)
 //Dinh nghia cac ham
 bool Program::orderSuccess(Order& o)
 {
-    for (size_t i = 0; i < o.szCodeItems.size(); i++)
+    for (size_t i = 0; i < o.sizeCodeItems.size(); i++)
     {
-        if (!foundItem(o.szCodeItems[i]))
+        if (!foundItem(o.sizeCodeItems[i]))
             return false;
         else
-            if (o.sizeProducts[i] <= 0 && greaterMaxProducts(o.szCodeItems[i], o.sizeProducts[i]))
+            if (o.sizeProducts[i] <= 0 && greaterMaxProducts(o.sizeCodeItems[i], o.sizeProducts[i]))
                 return false;
     }
     return true;
@@ -708,8 +708,8 @@ void Program::loadingOrder()
         if (orderSuccess(sizeOrders.front()))
         {
             writeToFile(sizeOrders.front(), g_FileDonHang, true);
-            for (size_t j = 1; j < sizeOrders.front().szCodeItems.size(); j++)
-                updateItem(sizeOrders.front().szCodeItems[j], -sizeOrders.front().sizeProducts[j]);
+            for (size_t j = 1; j < sizeOrders.front().sizeCodeItems.size(); j++)
+                updateItem(sizeOrders.front().sizeCodeItems[j], - sizeOrders.front().sizeProducts[j]);
         }
         else
             writeToFile(sizeOrders.front(), g_FileDonHang, false);
@@ -743,8 +743,8 @@ void Program::writeToFile(Order& o, const string& path, bool state)
         f << "Dien thoai: " << o.getPhone() << '\n';
         f << "Ngay mua: " << o.getDay() << '\n';
         f << "\n***Cac san pham dat mua***" << '\n';
-        for (size_t i = 0; i < o.szCodeItems.size(); i++)
-            f << "   Ma hang hoa " << o.szCodeItems[i] << " voi " << o.sizeProducts[i] << " so luong.\n";
+        for (size_t i = 0; i < o.sizeCodeItems.size(); i++)
+            f << "   Ma hang hoa " << o.sizeCodeItems[i] << " voi " << o.sizeProducts[i] << " so luong.\n";
         f << "\n==========================================================================" << endl;
 
 
