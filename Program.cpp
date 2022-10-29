@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <iomanip>
@@ -24,15 +24,15 @@
 using namespace std;
 // Vi tri luu file
 namespace filePath {
-	// File Admin.txt duoc tao truoc va dien username va password
-	const string g_FileAdmin = "D:\\Admin.txt";//Thay doi vi tri luu file o day!
-	
-	// File HangHoa.txt duoc tao truoc va dien cac thong tin cua hang hoa theo thu tu
+    // File Admin.txt duoc tao truoc va dien username va password
+    const string g_FileAdmin = "C:\\Admin.txt";//Thay doi vi tri luu file o day!
+
+    // File HangHoa.txt duoc tao truoc va dien cac thong tin cua hang hoa theo thu tu
     //(Mã hàng)~(Tên Hàng)~(Nơi sản xuất)~(Mau sắc)~(Giá cả)~(NgayNhapKho)~(Số lượng)
-    const string g_FileHangHoa = "D:\\HangHoa.txt";//Thay doi vi tri luu file o day!
-	
+    const string g_FileHangHoa = "C:\\HangHoa.txt";//Thay doi vi tri luu file o day!
+
     // File DonHang.txt duoc tao boi chuong trinh
-    const string g_FileDonHang = "D:\\DonHang.txt";//Thay doi vi tri luu file o day!
+    const string g_FileDonHang = "C:\\DonHang.txt";//Thay doi vi tri luu file o day!
 }
 using namespace filePath;
 //Account
@@ -233,7 +233,7 @@ class Order
     string _strCustomerPhone;
     string _strDay;
 public:
-    vector<string> sizeCodeItems;
+    vector<string> szCodeItems;
     vector<int> sizeProducts;
 
     int getCode();
@@ -276,7 +276,7 @@ istream& operator >> (istream& is, Order& o)
 
             SPACE(NUB + NUB); cout << "Ma san pham thu " << i + 1 << ": ";
             is >> strCode;
-            o.sizeCodeItems.push_back(strCode);
+            o.szCodeItems.push_back(strCode);
             SPACE(NUB * 2); cout << "So luong san pham dat mua: ";
             is >> iProducts;
             o.sizeProducts.push_back(iProducts);
@@ -465,12 +465,12 @@ void SetWindowSize(SHORT width, SHORT height)
 //Dinh nghia cac ham
 bool Program::orderSuccess(Order& o)
 {
-    for (size_t i = 0; i < o.sizeCodeItems.size(); i++)
+    for (size_t i = 0; i < o.szCodeItems.size(); i++)
     {
-        if (!foundItem(o.sizeCodeItems[i]))
+        if (!foundItem(o.szCodeItems[i]))
             return false;
         else
-            if (o.sizeProducts[i] <= 0 && greaterMaxProducts(o.sizeCodeItems[i], o.sizeProducts[i]))
+            if (o.sizeProducts[i] <= 0 && greaterMaxProducts(o.szCodeItems[i], o.sizeProducts[i]))
                 return false;
     }
     return true;
@@ -523,9 +523,10 @@ void Program::menu()
     SPACE(NUB2); cout << "4. Quan ly." << '\n';
 
     NEWLINE(BOTTOM);
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     SPACE(NUB2); cout << "An \"ESC\" de thoat." << '\n';
 
-
+    SetColor(eColor::BLACK, eColor::WHITE);
     while (_cKeyPress = _getch())
     {
         switch (_cKeyPress)
@@ -545,13 +546,13 @@ void Program::menu()
         case ESC:
             exit(0);
         default:
-            SetColor(eColor::BLACK, eColor::LIGHT_RED);
-			SPACE(NUB2); cout << "Du lieu khong hop le! Vui long nhap lai." << '\n';
+            SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
+            SPACE(NUB2); cout << "Du lieu khong hop le! Vui long nhap lai." << '\n';
             Sleep(2000);
             menu();
             exit(0);
         }
-        
+
     }
 
 }
@@ -559,12 +560,13 @@ void Program::menu()
 // Ham hien thi thong tin hang hoa
 void Program::display()
 {
+    SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
     system("cls");
     cout << left;
     SPACE(NUB - WIDTH);
     HOR(WIDTH + SP1 + WIDTH + SP3 + WIDTH + SP2 + WIDTH + SP1 + WIDTH + SP1 + WIDTH + SP2 + WIDTH + SP1 + WIDTH);
     NEWLINE(1);
-    SPACE(NUB - WIDTH);           
+    SPACE(NUB - WIDTH);
     VER(WIDTH);
     SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
     cout << setw(SP1) << "Ma hang";         VER(WIDTH);
@@ -584,11 +586,12 @@ void Program::display()
         cout << sizeItems[i];
 
     NEWLINE(3);
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai.\n";
     while (_cKeyPress = _getch())
     {
-        if (_cKeyPress == ESC) 
-        {           
+        if (_cKeyPress == ESC)
+        {
             exit(0);
         }
         else if (_cKeyPress == 'p')
@@ -604,7 +607,9 @@ void Program::search()
 
     NEWLINE(TOP);
     string strName = "";
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     SPACE(NUB); cout << "Nhap ten san pham muon tim: ";
+    SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
     getline(cin, strName);
     NEWLINE(BOTTOM);
 
@@ -617,6 +622,7 @@ void Program::search()
             check++;
         }
     if (check != 0) {
+        SetColor(eColor::BLACK, eColor::WHITE);
         HOR(WIDTH + SP1 + WIDTH + SP3 + WIDTH + SP2 + WIDTH + SP1 + WIDTH + SP1 + WIDTH + SP2 + WIDTH + SP1 + WIDTH);
         NEWLINE(1);
         SPACE(NUB - WIDTH);                     VER(WIDTH);
@@ -644,9 +650,11 @@ void Program::search()
         NEWLINE(3);
     }
     else {
+        SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
         cout << "\t\t\t\t\t\t\tKhong tim thay hang      " << endl;
         NEWLINE(1);
     }
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     SPACE(NUB); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai \"Enter\" de tiep tuc.\n";
 
     while (_cKeyPress = _getch())
@@ -655,7 +663,7 @@ void Program::search()
             exit(0);
         else if (_cKeyPress == 'p')
             menu();
-        else if (_cKeyPress == ENTER) 
+        else if (_cKeyPress == ENTER)
         {
             search();
             exit(0);
@@ -678,15 +686,18 @@ void Program::order()
     if (orderSuccess(o))
     {
         NEWLINE(5);
+        SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
         SPACE(NUB2); cout << "Don hang dang cho xu ly.";
         sizeOrders.push(o);
     }
     else
     {
+        SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
         SPACE(NUB2); cout << "Don hang THAT BAI, mot so san pham khong co san vui long ghe lai sau!";
     }
 
     NEWLINE(3);
+    SetColor(eColor::BLACK, eColor::LIGHT_RED);
     SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai ENTER de tiep tuc.";
 
     while (_cKeyPress = _getch())
@@ -708,8 +719,8 @@ void Program::loadingOrder()
         if (orderSuccess(sizeOrders.front()))
         {
             writeToFile(sizeOrders.front(), g_FileDonHang, true);
-            for (size_t j = 1; j < sizeOrders.front().sizeCodeItems.size(); j++)
-                updateItem(sizeOrders.front().sizeCodeItems[j], - sizeOrders.front().sizeProducts[j]);
+            for (size_t j = 1; j < sizeOrders.front().szCodeItems.size(); j++)
+                updateItem(sizeOrders.front().szCodeItems[j], -sizeOrders.front().sizeProducts[j]);
         }
         else
             writeToFile(sizeOrders.front(), g_FileDonHang, false);
@@ -718,6 +729,7 @@ void Program::loadingOrder()
     }
 
     NEWLINE(TOP);
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     SPACE(NUB2); cout << "Da xu ly. Con lai " << sizeOrders.size() << " don hang can xu li.\n";
     NEWLINE(BOTTOM);
     SPACE(NUB2); cout << "An \"ESC\" de thoat \"p\" de quay lai \"Enter\" de tiep tuc.";
@@ -734,8 +746,7 @@ void Program::loadingOrder()
 void Program::writeToFile(Order& o, const string& path, bool state)
 {
     ofstream f(g_FileDonHang, std::ios::app);
-    if (f)
-    {
+        SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
         f << "======DON HANG " << (state ? "THANH CONG" : "THAT BAI") << " ======\n";
         f << "Ma don: " << stt << '\n';
         f << "Ten khach hang: " << o.getCustomer() << '\n';
@@ -743,14 +754,9 @@ void Program::writeToFile(Order& o, const string& path, bool state)
         f << "Dien thoai: " << o.getPhone() << '\n';
         f << "Ngay mua: " << o.getDay() << '\n';
         f << "\n***Cac san pham dat mua***" << '\n';
-        for (size_t i = 0; i < o.sizeCodeItems.size(); i++)
-            f << "   Ma hang hoa " << o.sizeCodeItems[i] << " voi " << o.sizeProducts[i] << " so luong.\n";
+        for (size_t i = 0; i < o.szCodeItems.size(); i++)
+            f << "   Ma hang hoa " << o.szCodeItems[i] << " voi " << o.sizeProducts[i] << " so luong.\n";
         f << "\n==========================================================================" << endl;
-
-
-    }
-    else
-        cout << "Khong the mo file. Vui long thu lai.";
     f.close();
 }
 void Program::uploadFile(const string& path)
@@ -776,18 +782,16 @@ void Program::manage()
     SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
     SPACE(NUB2); cout << "*************************************************" << '\n';
     SPACE(NUB2); cout << "***";
-    SetColor(eColor::BLACK, eColor::LIGHT_GREEN);
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     cout << "             DANG NHAP HE THONG            ";
     SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
     cout << "***" << '\n';
     SPACE(NUB2); cout << "*************************************************" << '\n';
     NEWLINE(BOTTOM);
-    SetColor(eColor::BLACK, eColor::GREEN);
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     SPACE(NUB2); cout << "User      :                                    " << '\n';
     SPACE(NUB2); cout << "Password  :                                    ";
-
     SetColor(eColor::BLACK, eColor::WHITE);
-
     int loginSuccess = login();
     SPACE(NUB2); cout << "Nhan \"ESC\" de thoat an \"p\" de quay lai hoac an \"Enter\" de tiep tuc.";
     while (_cKeyPress = _getch())
@@ -855,7 +859,7 @@ int Program::login()
         }
     if (success && soLanNhap)
     {
-        SetColor(eColor::BLACK, eColor::GREEN);
+        SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
         SPACE(NUB2); cout << "Dang nhap thanh cong. ";
         Sleep(1000);
         menuManage();
@@ -863,7 +867,7 @@ int Program::login()
         return 2;
     }
     else if (success && soLanNhap == 0) {
-        SetColor(eColor::BLACK, eColor::GREEN);
+        SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
         SPACE(NUB2); cout << "Dang nhap thanh cong. ";
         Sleep(1000);
         menuManage();
@@ -898,7 +902,7 @@ void Program::menuManage()
     SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
     SPACE(NUB2); cout << "*************************************************" << '\n';
     SPACE(NUB2); cout << "***";
-    SetColor(eColor::BLACK, eColor::LIGHT_GREEN);
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
     cout << "                Menu Quan Ly               ";
     SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
     cout << "***" << '\n';
@@ -908,7 +912,7 @@ void Program::menuManage()
     SPACE(NUB2); cout << "1. Xu ly don hang." << '\n';
     SPACE(NUB2); cout << "2. Quan ly hang hoa." << '\n';
     NEWLINE(BOTTOM);
-
+    SetColor(eColor::BLACK, eColor::LIGHT_YELLOW);
 
     SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai.\n";
 
@@ -929,7 +933,7 @@ void Program::menuManage()
         case ESC:
             exit(0);
         default:
-			SetColor(eColor::BLACK, eColor::LIGHT_RED);
+            SetColor(eColor::BLACK, eColor::LIGHT_RED);
             SPACE(NUB2); cout << "Du lieu khong hop le!";
             Sleep(2000);
             menuManage();
@@ -977,7 +981,7 @@ void Program::manageItem()
         case ESC:
             exit(0);
         default:
-			SetColor(eColor::BLACK, eColor::LIGHT_RED);
+            SetColor(eColor::BLACK, eColor::LIGHT_RED);
             SPACE(NUB2); cout << "Du lieu khong hop le!";
             Sleep(2000);
             manageItem();
