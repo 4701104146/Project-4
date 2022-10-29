@@ -1,0 +1,121 @@
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: nhan
+Dia chi khach hang: viet
+Dien thoai: 124
+Ngay mua: 1/1/1212
+
+***Cac san pham dat mua***
+   Ma hang hoa 001 voi 001 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: ba
+Dia chi khach hang: vn
+Dien thoai: 124
+Ngay mua: 1/1/232
+
+***Cac san pham dat mua***
+   Ma hang hoa 001 voi 001 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: q
+Dia chi khach hang: vn
+Dien thoai: 1234
+Ngay mua: 1/1/232
+
+***Cac san pham dat mua***
+   Ma hang hoa 001 voi 200 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: vc
+Dia chi khach hang: vc
+Dien thoai: 123
+Ngay mua: 12/12/12
+
+***Cac san pham dat mua***
+   Ma hang hoa 001 voi 6000 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: nv
+Dia chi khach hang: nv
+Dien thoai: 1
+Ngay mua: 1/1/1
+
+***Cac san pham dat mua***
+   Ma hang hoa 002 voi 100000 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: 
+Dia chi khach hang: vc
+Dien thoai: 123
+Ngay mua: 1/1/
+
+***Cac san pham dat mua***
+   Ma hang hoa 001 voi 70000 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: vc
+Dia chi khach hang: cv
+Dien thoai: cv
+Ngay mua: 123
+
+***Cac san pham dat mua***
+   Ma hang hoa 001 voi 12 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: a
+Dia chi khach hang: a
+Dien thoai: 1
+Ngay mua: 1/1/1
+
+***Cac san pham dat mua***
+   Ma hang hoa 002 voi 300 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 2
+Ten khach hang: 
+Dia chi khach hang: a
+Dien thoai: 1
+Ngay mua: 1/1/1
+
+***Cac san pham dat mua***
+   Ma hang hoa 002 voi 213 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: q
+Dia chi khach hang: q
+Dien thoai: 1
+Ngay mua: 1/1/1234
+
+***Cac san pham dat mua***
+   Ma hang hoa 004 voi 200 so luong.
+
+==========================================================================
+======DON HANG THANH CONG ======
+Ma don: 1
+Ten khach hang: q
+Dia chi khach hang: vc
+Dien thoai: 123
+Ngay mua: 1/1/1
+
+***Cac san pham dat mua***
+   Ma hang hoa 002 voi 200 so luong.
+
+==========================================================================
