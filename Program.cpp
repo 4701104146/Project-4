@@ -6,57 +6,10 @@
 #include <queue>
 #include <Windows.h>
 #include <conio.h>
-
-using namespace std;
-
-
-class Account
-{
-    string TaiKhoan;
-    string MatKhau;
-public:
-    friend ifstream& operator >> (ifstream& in, Account& t);
-
-
-    bool operator == (const Account& t);
-
-    void setTK();
-    string getTK();
-
-    string getMK();
-    void setMK(string MK);
-};
-ifstream& operator >> (ifstream& in, Account& t) {
-    in >> t.TaiKhoan >> t.MatKhau;
-    return in;
-}
-bool Account::operator == (const Account& t) {
-    return this->TaiKhoan == t.TaiKhoan && this->MatKhau == t.MatKhau;
-}
-
-void Account::setTK()
-{
-    cin >> TaiKhoan;
-}
-string Account::getTK()
-{
-    return TaiKhoan;
-}
-
-string Account::getMK()
-{
-    return MatKhau;
-}
-void Account::setMK(string MK)
-{
-    MatKhau = MK;
-}
-
 #define NUB 20
 #define NUB2 NUB * 2
 #define SPACE(i) for (int j = 0; j < i ; j++,(cout << ' '))
 #define NEWLINE(i) for (int j = 0; j < i ; j++,(cout << '\n'))
-
 #define WIDTH 1
 #define TOP 5
 #define BOTTOM 3
@@ -65,8 +18,62 @@ void Account::setMK(string MK)
 #define SP1 13
 #define SP2 23
 #define SP3 33
+#define ESC 27
+#define ENTER 13
+#define BACKSPACE 8
+using namespace std;
+// Vi tri luu file
+namespace filePath {
+	// File Admin.txt duoc tao truoc va dien username va password
+	const string g_FileAdmin = "D:\\Admin.txt";//Thay doi vi tri luu file o day!
+	
+	// File HangHoa.txt duoc tao truoc va dien cac thong tin cua hang hoa theo thu tu
+    //(Mã hàng)~(Tên Hàng)~(Nơi sản xuất)~(Mau sắc)~(Giá cả)~(NgayNhapKho)~(Số lượng)
+    const string g_FileHangHoa = "D:\\HangHoa.txt";//Thay doi vi tri luu file o day!
+	
+    // File DonHang.txt duoc tao boi chuong trinh
+    const string g_FileDonHang = "D:\\DonHang.txt";//Thay doi vi tri luu file o day!
+}
+using namespace filePath;
+//Account
+class Account
+{
+    string TaiKhoan;
+    string MatKhau;
+public:
+    friend ifstream& operator >> (ifstream& in, Account& t);
+    bool operator == (const Account& t) const;
 
+    void setTK();
+    string getTK() const;
 
+    string getMK() const;
+    void setMK(string MK);
+};
+ifstream& operator >> (ifstream& in, Account& t) {
+    in >> t.TaiKhoan >> t.MatKhau;
+    return in;
+}
+bool Account::operator == (const Account& t) const {
+    return this->TaiKhoan == t.TaiKhoan && this->MatKhau == t.MatKhau;
+}
+void Account::setTK()
+{
+    cin >> TaiKhoan;
+}
+string Account::getTK() const
+{
+    return TaiKhoan;
+}
+string Account::getMK() const
+{
+    return MatKhau;
+}
+void Account::setMK(string MK)
+{
+    MatKhau = MK;
+}
+//Item
 class Item
 {
     string _strCode = "";
@@ -83,7 +90,6 @@ public:
     friend ofstream& operator << (ofstream& os, Item& h);
     friend ostream& operator << (ostream& os, const Item& h);
     friend istream& operator >> (istream& is, Item& i);
-
 
     string getCode();
     int getNumber();
@@ -141,7 +147,6 @@ ofstream& operator << (ofstream& os, Item& h)
         << '~' << h.getPrice() << '~' << h.getDay() << '~' << h.getProduct();
     return os;
 }
-
 ostream& operator << (ostream& os, const Item& h)
 {
     SPACE(NUB - WIDTH); VER(WIDTH);
@@ -176,8 +181,6 @@ istream& operator >> (istream& is, Item& i)
     is >> i._iProducts;
     return is;
 }
-
-
 string Item::getCode()
 {
     return _strCode;
@@ -218,6 +221,7 @@ int Item::getProduct()
 {
     return _iProducts;
 }
+//Order
 class Order
 
 {
@@ -230,7 +234,7 @@ class Order
     string _strDay;
 public:
     vector<string> szCodeItems;
-    vector<int> szProducts;
+    vector<int> sizeProducts;
 
     int getCode();
     int getPrice();
@@ -245,7 +249,6 @@ public:
 
 };
 int Order::_SERI = 0;
-
 istream& operator >> (istream& is, Order& o)
 {
     SPACE(NUB2);
@@ -276,7 +279,7 @@ istream& operator >> (istream& is, Order& o)
             o.szCodeItems.push_back(strCode);
             SPACE(NUB * 2); cout << "So luong san pham dat mua: ";
             is >> iProducts;
-            o.szProducts.push_back(iProducts);
+            o.sizeProducts.push_back(iProducts);
             i++;
         }
     }
@@ -286,7 +289,6 @@ istream& operator >> (istream& is, Order& o)
     return is;
 
 }
-
 int Order::getCode()
 {
     return _iSeri;
@@ -311,35 +313,16 @@ string Order::getDay()
 {
     return _strDay;
 }
-enum class eColor;
-void GoTo(SHORT posX, SHORT posY);
-void SetColor(eColor highlight_color, eColor text_color);
-
-namespace filePath {
-    // File admin phải tự tạo từ trước bởi cá nhân và điền thông tin vào.
-    const string g_FileAdmin = "D:\\admin.txt";
-
-    // File hàng hóa tương tự file admin.
-    // Thông tin trong file phải điền theo thứ tự
-
-    //        (Mã hàng)~(Tên Hàng)~(Nơi sản xuất)~(Mau sắc)~(Giá cả)~(NgayNhapKho)~(Số lượng)
-
-
-    const string g_FileHangHoa = "D:\\HangHoa.txt";
-
-    // File đơn hàng sẽ được tự tạo bởi chương trình.
-    const string g_FileDonHang = "D:\\DonHang.txt";
-}
-
+//Program
 class Program
 {
     // key_press nhận nút điều khiển từ chương trình.
     char _cKeyPress = 0;
     int stt = 1;
     // mảng các tài khoản admin, đơn hàng, hàng hóa,
-    vector<Account> szAdmin;
-    vector<Item> szItems;
-    queue<Order> szOrders;
+    vector<Account> sizeAdmin;
+    vector<Item> sizeItems;
+    queue<Order> sizeOrders;
 
 
 public:
@@ -376,7 +359,7 @@ public:
     bool orderSuccess(Order& o);
     int login();
 
-    // update Item có mã (code)
+    // update Item 
     void updateItem(const string& code, int product);
     bool foundItem(const string& code);
 
@@ -387,11 +370,58 @@ public:
     // hàm kiểm tra xem số sản phẩm (products) truyền vô có lớn hơn số sản phẩm tối đa của sản phẩm có mã là (code) không
     bool greaterMaxProducts(const string& code, int products);
 };
-#define ESC 27
-#define ENTER 13
-#define BACKSPACE 8
-using namespace filePath;
+void Program::loadAdmins()
+{
+    Account t;
+    ifstream f(g_FileAdmin);
+    while (!f.eof())
+    {
+        f >> t;
+        sizeAdmin.push_back(t);
+    }
+    f.close();
+}
+void Program::loadItems()
+{
+    ifstream f(g_FileHangHoa);
+    while (!f.eof())
+    {
+        Item i;
+        f >> i;
+        sizeItems.push_back(i);
+    }
+    f.close();
 
+}
+//#Positon
+void GoTo(SHORT posX, SHORT posY);
+//Color
+enum class eColor;
+void SetColor(eColor highlight_color, eColor text_color);
+//Size Console
+void SetWindowSize(SHORT width, SHORT height);
+
+int main()
+{
+    SetWindowSize(50, 80);
+    Program program;
+    program.loadAdmins();
+    program.loadItems();
+    program.run();
+}
+
+// Ham di chuyen con tro toi vi tri (posX, posY)
+void GoTo(SHORT posX, SHORT posY)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD Position;
+    Position.X = posX;
+    Position.Y = posY;
+
+    SetConsoleCursorPosition(hStdout, Position);
+}
+
+// Ham Set mau sac cho chu va nen
 enum class eColor
 {
     BLACK,
@@ -411,64 +441,6 @@ enum class eColor
     LIGHT_YELLOW,
     BRIGHT_WHITE,
 };
-
-void Program::loadAdmins()
-{
-    Account t;
-    ifstream f(g_FileAdmin);
-    while (!f.eof())
-    {
-        f >> t;
-        szAdmin.push_back(t);
-    }
-    f.close();
-}
-void Program::loadItems()
-{
-    ifstream f(g_FileHangHoa);
-    while (!f.eof())
-    {
-        Item i;
-        f >> i;
-        szItems.push_back(i);
-    }
-    f.close();
-
-}
-void SetWindowSize(SHORT width, SHORT height)
-{
-    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    SMALL_RECT WindowSize;
-    WindowSize.Top = 0;
-    WindowSize.Left = 0;
-    WindowSize.Right = width;
-    WindowSize.Bottom = height;
-
-    SetConsoleWindowInfo(hStdout, 1, &WindowSize);
-}
-
-int main()
-{
-    SetWindowSize(50, 80);
-
-    Program program;
-    program.loadAdmins();
-    program.loadItems();
-    program.run();
-}
-
-// Di chuyển con trỏ văn bản trên console
-void GoTo(SHORT posX, SHORT posY)
-{
-    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD Position;
-    Position.X = posX;
-    Position.Y = posY;
-
-    SetConsoleCursorPosition(hStdout, Position);
-}
-
 void SetColor(eColor hglt_color, eColor txt_color)
 {
     auto highlight_color = (int)hglt_color; // auto tu dong nhan kieu du lieu
@@ -479,7 +451,54 @@ void SetColor(eColor hglt_color, eColor txt_color)
     SetConsoleTextAttribute(hStdout, color_code);
 }
 
+// Ham Set Console size
+void SetWindowSize(SHORT width, SHORT height)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    SMALL_RECT WindowSize;
+    WindowSize.Top = 0;
+    WindowSize.Left = 0;
+    WindowSize.Right = width;
+    WindowSize.Bottom = height;
+    SetConsoleWindowInfo(hStdout, 1, &WindowSize);
+}
+//Dinh nghia cac ham
+bool Program::orderSuccess(Order& o)
+{
+    for (size_t i = 0; i < o.szCodeItems.size(); i++)
+    {
+        if (!foundItem(o.szCodeItems[i]))
+            return false;
+        else
+            if (o.sizeProducts[i] <= 0 && greaterMaxProducts(o.szCodeItems[i], o.sizeProducts[i]))
+                return false;
+    }
+    return true;
+}
+bool Program::foundItem(const string& code)
+{
+    for (size_t i = 0; i < sizeItems.size(); i++)
+        if (code == sizeItems[i].getCode())
+            return true;
+    return false;
+}
+bool Program::greaterMaxProducts(const string& code, int n) {
+    for (size_t i = 0; i < sizeItems.size(); i++)
+        if (code == sizeItems[i].getCode())
+            return sizeItems[i].getNumber() <= n;
+    return false;
+}
+void Program::updateItem(const string& code, int product)
+{
+    for (size_t i = 0; i < sizeItems.size(); i++)
+        if (code == sizeItems[i].getCode())
+        {
+            sizeItems[i].update(product);
+            return;
+        }
+}
 
+// Man hinh chinh
 void Program::run()
 {
     menu();
@@ -503,7 +522,6 @@ void Program::menu()
     SPACE(NUB2); cout << "3. Dat hang." << '\n';
     SPACE(NUB2); cout << "4. Quan ly." << '\n';
 
-
     NEWLINE(BOTTOM);
     SPACE(NUB2); cout << "An \"ESC\" de thoat." << '\n';
 
@@ -524,9 +542,13 @@ void Program::menu()
         case '4':
             manage();
             exit(0);
-        case ESC: exit(0);
+        case ESC:
+            exit(0);
         default:
-            SPACE(NUB2); cout << "Du lieu khong hop le, tu dong thoat!";
+            SetColor(eColor::BLACK, eColor::LIGHT_RED);
+			SPACE(NUB2); cout << "Du lieu khong hop le! Vui long nhap lai." << '\n';
+            Sleep(2000);
+            menu();
             exit(0);
         }
         
@@ -534,16 +556,17 @@ void Program::menu()
 
 }
 
-// menu
+// Ham hien thi thong tin hang hoa
 void Program::display()
 {
     system("cls");
-
     cout << left;
     SPACE(NUB - WIDTH);
     HOR(WIDTH + SP1 + WIDTH + SP3 + WIDTH + SP2 + WIDTH + SP1 + WIDTH + SP1 + WIDTH + SP2 + WIDTH + SP1 + WIDTH);
     NEWLINE(1);
-    SPACE(NUB - WIDTH);                     VER(WIDTH);
+    SPACE(NUB - WIDTH);           
+    VER(WIDTH);
+    SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
     cout << setw(SP1) << "Ma hang";         VER(WIDTH);
     cout << setw(SP3) << "Ten hang";        VER(WIDTH);
     cout << setw(SP2) << "Noi san xuat";    VER(WIDTH);
@@ -557,21 +580,24 @@ void Program::display()
     NEWLINE(1);
 
     cout << left;
-    for (size_t i = 0; i < szItems.size(); i++)
-        cout << szItems[i];
-
+    for (size_t i = 0; i < sizeItems.size(); i++)
+        cout << sizeItems[i];
 
     NEWLINE(3);
-    SPACE(NUB2); cout << "An \"ESC\" de thoat \"p\" de quay lai.";
+    SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai.\n";
     while (_cKeyPress = _getch())
     {
-        if (_cKeyPress == ESC)
+        if (_cKeyPress == ESC) 
+        {           
             exit(0);
+        }
         else if (_cKeyPress == 'p')
             menu();
     }
 
 }
+
+// Ham tim kiem thong tin hang hoa
 void Program::search()
 {
     system("cls");
@@ -585,8 +611,8 @@ void Program::search()
     cout << left;
     SPACE(NUB - WIDTH);
     int check = 0;
-    for (size_t i = 0; i < szItems.size(); i++)
-        if (szItems[i].getName() == strName)
+    for (size_t i = 0; i < sizeItems.size(); i++)
+        if (sizeItems[i].getName() == strName)
         {
             check++;
         }
@@ -607,10 +633,10 @@ void Program::search()
         NEWLINE(1);
 
 
-        for (size_t i = 0; i < szItems.size(); i++)
-            if (szItems[i].getName() == strName)
+        for (size_t i = 0; i < sizeItems.size(); i++)
+            if (sizeItems[i].getName() == strName)
             {
-                cout << szItems[i];
+                cout << sizeItems[i];
             }
 
 
@@ -621,7 +647,7 @@ void Program::search()
         cout << "\t\t\t\t\t\t\tKhong tim thay hang      " << endl;
         NEWLINE(1);
     }
-    SPACE(NUB); cout << "An \"ESC\" de thoat \"p\" de quay lai \"Enter\" de tiep tuc.";
+    SPACE(NUB); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai \"Enter\" de tiep tuc.\n";
 
     while (_cKeyPress = _getch())
     {
@@ -629,10 +655,16 @@ void Program::search()
             exit(0);
         else if (_cKeyPress == 'p')
             menu();
-        else if (_cKeyPress == ENTER)
+        else if (_cKeyPress == ENTER) 
+        {
             search();
+            exit(0);
+        }
+
     }
 }
+
+// Ham dat hang
 void Program::order()
 {
     system("cls");
@@ -647,7 +679,7 @@ void Program::order()
     {
         NEWLINE(5);
         SPACE(NUB2); cout << "Don hang dang cho xu ly.";
-        szOrders.push(o);
+        sizeOrders.push(o);
     }
     else
     {
@@ -655,7 +687,7 @@ void Program::order()
     }
 
     NEWLINE(3);
-    SPACE(NUB2); cout << "An \"ESC\" de thoat \"p\" de quay lai ENTER de tiep tuc.";
+    SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai ENTER de tiep tuc.";
 
     while (_cKeyPress = _getch())
     {
@@ -665,8 +697,78 @@ void Program::order()
             menu();
         else if (_cKeyPress == ENTER)
             order();
+
     }
 }
+void Program::loadingOrder()
+{
+    system("cls");
+    for (size_t i = 0; i < sizeOrders.size(); i++)
+    {
+        if (orderSuccess(sizeOrders.front()))
+        {
+            writeToFile(sizeOrders.front(), g_FileDonHang, true);
+            for (size_t j = 1; j < sizeOrders.front().szCodeItems.size(); j++)
+                updateItem(sizeOrders.front().szCodeItems[j], -sizeOrders.front().sizeProducts[j]);
+        }
+        else
+            writeToFile(sizeOrders.front(), g_FileDonHang, false);
+        stt++;
+        sizeOrders.pop();
+    }
+
+    NEWLINE(TOP);
+    SPACE(NUB2); cout << "Da xu ly. Con lai " << sizeOrders.size() << " don hang can xu li.\n";
+    NEWLINE(BOTTOM);
+    SPACE(NUB2); cout << "An \"ESC\" de thoat \"p\" de quay lai \"Enter\" de tiep tuc.";
+    while (_cKeyPress = _getch())
+    {
+        if (_cKeyPress == ESC)
+            exit(0);
+        else if (_cKeyPress == 'p')
+            menuManage();
+        else if (_cKeyPress == ENTER)
+            loadingOrder();
+    }
+}
+void Program::writeToFile(Order& o, const string& path, bool state)
+{
+    ofstream f(g_FileDonHang, std::ios::app);
+    if (f)
+    {
+        f << "======DON HANG " << (state ? "THANH CONG" : "THAT BAI") << " ======\n";
+        f << "Ma don: " << stt << '\n';
+        f << "Ten khach hang: " << o.getCustomer() << '\n';
+        f << "Dia chi khach hang: " << o.getCustomerAdress() << '\n';
+        f << "Dien thoai: " << o.getPhone() << '\n';
+        f << "Ngay mua: " << o.getDay() << '\n';
+        f << "\n***Cac san pham dat mua***" << '\n';
+        for (size_t i = 0; i < o.szCodeItems.size(); i++)
+            f << "   Ma hang hoa " << o.szCodeItems[i] << " voi " << o.sizeProducts[i] << " so luong.\n";
+        f << "\n==========================================================================" << endl;
+
+
+    }
+    else
+        cout << "Khong the mo file. Vui long thu lai.";
+    f.close();
+}
+void Program::uploadFile(const string& path)
+{
+    ofstream f(path);
+    if (f)
+    {
+        for (size_t i = 0; i < sizeItems.size(); i++)
+        {
+            f << sizeItems[i];
+            if (i != sizeItems.size() - 1)
+                f << '\n';
+        }
+    }
+    f.close();
+}
+
+// Login
 void Program::manage()
 {
     system("cls");
@@ -686,10 +788,8 @@ void Program::manage()
 
     SetColor(eColor::BLACK, eColor::WHITE);
 
-
-
     int loginSuccess = login();
-    SPACE(NUB2); cout << "An \"ESC\" de thoat an \"p\" de quay lai hoac an \"Enter\" de tiep tuc.";
+    SPACE(NUB2); cout << "Nhan \"ESC\" de thoat an \"p\" de quay lai hoac an \"Enter\" de tiep tuc.";
     while (_cKeyPress = _getch())
     {
         if (_cKeyPress == ESC)
@@ -709,75 +809,133 @@ void Program::manage()
     }
 
 }
+int Program::login()
+{
+    Account myAccount;
 
+    GoTo(NUB2 + 15, TOP + BOTTOM + 3);
+    myAccount.setTK();
+    GoTo(NUB2 + 15, TOP + BOTTOM + 3 + 1);
+    myAccount.setMK("");
 
-void Program::loadingOrder()
+    while (true)
+    {
+        _cKeyPress = _getch();
+
+        if (_cKeyPress == BACKSPACE)
+        {
+            string newPassword = myAccount.getMK();
+            if (newPassword != "")
+            {
+                newPassword.pop_back();
+                cout << "\b \b";
+            }
+            myAccount.setMK(newPassword);
+        }
+        else if (isspace(_cKeyPress))
+            break;
+        else
+        {
+            myAccount.setMK(myAccount.getMK() + _cKeyPress);
+            cout << '*';
+        }
+
+    }
+
+    SetColor(eColor::BLACK, eColor::YELLOW);
+    NEWLINE(3);
+
+    static int soLanNhap = 3;
+    bool success = false;
+    for (size_t i = 0; i < sizeAdmin.size(); i++)
+        if (sizeAdmin[i] == myAccount)
+        {
+            success = true;
+            break;
+        }
+    if (success && soLanNhap)
+    {
+        SetColor(eColor::BLACK, eColor::GREEN);
+        SPACE(NUB2); cout << "Dang nhap thanh cong. ";
+        Sleep(1000);
+        menuManage();
+        NEWLINE(6);
+        return 2;
+    }
+    else if (success && soLanNhap == 0) {
+        SetColor(eColor::BLACK, eColor::GREEN);
+        SPACE(NUB2); cout << "Dang nhap thanh cong. ";
+        Sleep(1000);
+        menuManage();
+        NEWLINE(6);
+        return 2;
+    }
+    else if (!success)
+    {
+        (soLanNhap > 0) ? soLanNhap-- : soLanNhap;
+        SetColor(eColor::BLACK, eColor::RED);
+        SPACE(NUB2); cout << "Dang nhap khong thanh cong.\n";
+        SPACE(NUB2); cout << "So lan con lai: " << soLanNhap;
+        NEWLINE(6);
+        SetColor(eColor::BLACK, eColor::WHITE);
+        if (!success && soLanNhap == 0) {
+            SetColor(eColor::BLACK, eColor::RED);
+            SPACE(NUB2); cout << "Ban da nhap sai qua so lan cho phep.\n";
+            SPACE(NUB2); cout << "Tam biet!";
+            Sleep(2000);
+            exit(0);
+        }
+        return 1;
+    }
+    return 0;
+}
+
+// quan ly
+void Program::menuManage()
 {
     system("cls");
-    for (size_t i = 0; i < szOrders.size(); i++)
-    {
-        if (orderSuccess(szOrders.front()))
-        {
-            writeToFile(szOrders.front(), g_FileDonHang, true);
-            for (size_t j = 1; j < szOrders.front().szCodeItems.size(); j++)
-                updateItem(szOrders.front().szCodeItems[j], -szOrders.front().szProducts[j]);
-        }
-        else
-            writeToFile(szOrders.front(), g_FileDonHang, false);
-        stt++;
-        szOrders.pop();
-    }
-
     NEWLINE(TOP);
-    SPACE(NUB2); cout << "Da xu ly. Con lai " << szOrders.size() << " don hang can xu li.\n";
+    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
+    SPACE(NUB2); cout << "*************************************************" << '\n';
+    SPACE(NUB2); cout << "***";
+    SetColor(eColor::BLACK, eColor::LIGHT_GREEN);
+    cout << "                Menu Quan Ly               ";
+    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
+    cout << "***" << '\n';
+    SPACE(NUB2); cout << "*************************************************" << '\n';
+    SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
     NEWLINE(BOTTOM);
-    SPACE(NUB2); cout << "An \"ESC\" de thoat \"p\" de quay lai \"Enter\" de tiep tuc.";
+    SPACE(NUB2); cout << "1. Xu ly don hang." << '\n';
+    SPACE(NUB2); cout << "2. Quan ly hang hoa." << '\n';
+    NEWLINE(BOTTOM);
+
+
+    SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai.\n";
+
     while (_cKeyPress = _getch())
     {
-        if (_cKeyPress == ESC)
-            exit(0);
-        else if (_cKeyPress == 'p')
-            menuManage();
-        else if (_cKeyPress == ENTER)
-            loadingOrder();
-    }
-}
-void Program::writeToFile(Order& o, const string& path, bool state)
-{
-    ofstream f(g_FileDonHang, std::ios::app);
-    if (f)
-    {
-
-        f << "======DON HANG " << (state ? "THANH CONG" : "THAT BAI") << " ======\n";
-        f << "Ma don: " << stt << '\n';
-        f << "Ten khach hang: " << o.getCustomer() << '\n';
-        f << "Dia chi khach hang: " << o.getCustomerAdress() << '\n';
-        f << "Dien thoai: " << o.getPhone() << '\n';
-        f << "Ngay mua: " << o.getDay() << '\n';
-        f << "\n***Cac san pham dat mua***" << '\n';
-        for (size_t i = 0; i < o.szCodeItems.size(); i++)
-            f << "   Ma hang hoa " << o.szCodeItems[i] << " voi " << o.szProducts[i] << " so luong.\n";
-        f << "\n==========================================================================" << endl;
-
-
-    }
-    else
-        cout << "Khong the mo file. Vui long thu lai.";
-    f.close();
-}
-void Program::uploadFile(const string& path)
-{
-    ofstream f(path);
-    if (f)
-    {
-        for (size_t i = 0; i < szItems.size(); i++)
+        switch (_cKeyPress)
         {
-            f << szItems[i];
-            if (i != szItems.size() - 1)
-                f << '\n';
+        case '1':
+            loadingOrder();
+            exit(0);
+        case '2':
+            manageItem();
+            exit(0);
+
+        case 'p':
+            menu();
+            exit(0);
+        case ESC:
+            exit(0);
+        default:
+			SetColor(eColor::BLACK, eColor::LIGHT_RED);
+            SPACE(NUB2); cout << "Du lieu khong hop le!";
+            Sleep(2000);
+            menuManage();
+            exit(0);
         }
     }
-    f.close();
 }
 void Program::manageItem()
 {
@@ -798,7 +956,7 @@ void Program::manageItem()
     SPACE(NUB2); cout << "3. Cap nhat so luong hang hoa.\n";
 
     NEWLINE(BOTTOM);
-    SPACE(NUB2); cout << "An \"ESC\" de thoat \"P\" de quay lai.";
+    SPACE(NUB2); cout << "An \"ESC\" de thoat \"P\" de quay lai.\n";
 
     while (_cKeyPress = _getch())
     {
@@ -819,14 +977,16 @@ void Program::manageItem()
         case ESC:
             exit(0);
         default:
-            SPACE(NUB2); cout << "Du lieu khong hop le, tu dong thoat!";
+			SetColor(eColor::BLACK, eColor::LIGHT_RED);
+            SPACE(NUB2); cout << "Du lieu khong hop le!";
+            Sleep(2000);
+            manageItem();
             exit(0);
         }
     }
 }
 
-
-// quan ly hang hoa//
+// quan ly hang hoa
 void Program::addItem()
 {
     system("cls");
@@ -847,12 +1007,12 @@ void Program::addItem()
     {
         cin >> i;
         i.setCode(strCode);
-        szItems.push_back(i);
+        sizeItems.push_back(i);
     }
 
     uploadFile(g_FileHangHoa);
     NEWLINE(BOTTOM);
-    SPACE(NUB); cout << "An \"ESC\" de thoat \"p\" de quay lai \"Enter\" de tiep tuc.";
+    SPACE(NUB); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai \"Enter\" de tiep tuc.";
     while (_cKeyPress = _getch())
     {
         if (_cKeyPress == ESC)
@@ -872,11 +1032,11 @@ void Program::removeItem()
     cin >> strCode;
 
     bool success = false;
-    for (size_t i = 0; i < szItems.size(); i++)
+    for (size_t i = 0; i < sizeItems.size(); i++)
     {
-        if (szItems[i].getCode() == strCode)
+        if (sizeItems[i].getCode() == strCode)
         {
-            szItems.erase(szItems.begin() + i);
+            sizeItems.erase(sizeItems.begin() + i);
             success = true;
         }
     }
@@ -889,7 +1049,7 @@ void Program::removeItem()
         NEWLINE(BOTTOM);
     }
 
-    SPACE(NUB2); cout << "An \"ESC\" de thoat \"P\" de quay lai \"Enter\" de tiep tuc.";
+    SPACE(NUB2); cout << "An \"ESC\" de thoat \"P\" de quay lai \"Enter\" de tiep tuc.\n";
     while (_cKeyPress = _getch())
     {
         if (_cKeyPress == ESC)
@@ -931,11 +1091,11 @@ void Program::updateItem()
     cin >> iProducts;
 
     bool success = false;
-    for (size_t i = 0; i < szItems.size(); i++)
-        if (szItems[i].getCode() == strCode)
+    for (size_t i = 0; i < sizeItems.size(); i++)
+        if (sizeItems[i].getCode() == strCode)
         {
             success = true;
-            bAsc ? szItems[i].update(iProducts) : szItems[i].update(-iProducts);
+            bAsc ? sizeItems[i].update(iProducts) : sizeItems[i].update(-iProducts);
         }
     uploadFile(g_FileHangHoa);
     NEWLINE(BOTTOM);
@@ -946,173 +1106,12 @@ void Program::updateItem()
         cout << "!!!!THANH CONG!!!!!";
     }
     NEWLINE(BOTTOM);
-    SPACE(NUB); cout << "An \"ESC\" de thoat \"p\" de quay lai.";
+    SPACE(NUB); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai.";
     while (_cKeyPress = _getch())
     {
         if (_cKeyPress == ESC)
             exit(0);
         if (_cKeyPress == 'p')
             manageItem();
-    }
-}
-
-
-//____________________________
-bool Program::orderSuccess(Order& o)
-{
-    for (size_t i = 0; i < o.szCodeItems.size(); i++)
-    {
-        if (!foundItem(o.szCodeItems[i]))
-            return false;
-        else
-            if (o.szProducts[i] <= 0 && greaterMaxProducts(o.szCodeItems[i], o.szProducts[i]))
-                return false;
-    }
-    return true;
-}
-bool Program::foundItem(const string& code)
-{
-    for (size_t i = 0; i < szItems.size(); i++)
-        if (code == szItems[i].getCode())
-            return true;
-    return false;
-}
-bool Program::greaterMaxProducts(const string& code, int n) {
-    for (size_t i = 0; i < szItems.size(); i++)
-        if (code == szItems[i].getCode())
-            return szItems[i].getNumber() <= n;
-    return false;
-}
-void Program::updateItem(const string& code, int product)
-{
-    for (size_t i = 0; i < szItems.size(); i++)
-        if (code == szItems[i].getCode())
-        {
-            szItems[i].update(product);
-            return;
-        }
-}
-int Program::login()
-{
-    Account myAccount;
-
-    GoTo(NUB2 + 15, TOP + BOTTOM + 3);
-    myAccount.setTK();
-    GoTo(NUB2 + 15, TOP + BOTTOM + 3 + 1);
-    myAccount.setMK("");
-
-    while (true)
-    {
-        _cKeyPress = _getch();
-
-        if (_cKeyPress == BACKSPACE)
-        {
-            string newPassword = myAccount.getMK();
-            if (newPassword != "")
-            {
-                newPassword.pop_back();
-                cout << "\b \b";
-            }
-            myAccount.setMK(newPassword);
-        }
-        else if (isspace(_cKeyPress))
-            break;
-        else
-        {
-            myAccount.setMK(myAccount.getMK() + _cKeyPress);
-            cout << '*';
-        }
-
-    }
-
-    SetColor(eColor::BLACK, eColor::YELLOW);
-    NEWLINE(3);
-
-    static int soLanNhap = 3;
-    bool success = false;
-    for (size_t i = 0; i < szAdmin.size(); i++)
-        if (szAdmin[i] == myAccount)
-        {
-            success = true;
-            break;
-        }
-    if (success && soLanNhap)
-    {
-        SetColor(eColor::BLACK, eColor::GREEN);
-        SPACE(NUB2); cout << "Dang nhap thanh cong. ";
-        Sleep(1000);
-        menuManage();
-        NEWLINE(6);
-        return 2;
-    }
-    else if (success && soLanNhap == 0) {
-        SetColor(eColor::BLACK, eColor::GREEN);
-        SPACE(NUB2); cout << "Dang nhap thanh cong. ";
-        Sleep(1000);
-        menuManage();
-        NEWLINE(6);
-        return 2;
-    }
-    else if (!success)
-    {
-        (soLanNhap > 0) ? soLanNhap-- : soLanNhap;
-        SetColor(eColor::BLACK, eColor::RED);
-        SPACE(NUB2); cout << "Dang nhap khong thanh cong.\n";
-        SPACE(NUB2); cout << "So lan con lai: " << soLanNhap;
-        NEWLINE(6);
-        SetColor(eColor::BLACK, eColor::WHITE);
-        if (!success && soLanNhap == 0) {
-			SetColor(eColor::BLACK, eColor::RED);
-            SPACE(NUB2); cout << "Ban da nhap sai qua so lan cho phep.\n";
-            SPACE(NUB2); cout << "Tam biet!";
-            Sleep(3000);
-            exit(0);
-        }
-        return 1;
-    }
-	return 0;
-}
-// quanLy//
-void Program::menuManage()
-{
-    system("cls");
-    NEWLINE(TOP);
-    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
-    SPACE(NUB2); cout << "*************************************************" << '\n';
-    SPACE(NUB2); cout << "***";
-    SetColor(eColor::BLACK, eColor::LIGHT_GREEN);
-    cout << "                Menu Quan Ly               ";
-    SetColor(eColor::BLACK, eColor::LIGHT_AQUA);
-    cout << "***" << '\n';
-    SPACE(NUB2); cout << "*************************************************" << '\n';
-    SetColor(eColor::BLACK, eColor::BRIGHT_WHITE);
-    NEWLINE(BOTTOM);
-    SPACE(NUB2); cout << "1. Xu ly don hang." << '\n';
-    SPACE(NUB2); cout << "2. Quan ly hang hoa." << '\n';
-    NEWLINE(BOTTOM);
-
-
-    SPACE(NUB2); cout << "Nhan \"ESC\" de thoat \"p\" de quay lai.";
-	
-    while (_cKeyPress = _getch())
-    {
-        switch (_cKeyPress)
-        {
-        case '1':
-            loadingOrder();
-            exit(0);
-        case '2':
-            manageItem();
-            exit(0);
-
-        case 'p':
-            menu();
-            exit(0);
-        case ESC:
-            exit(0);
-        default:
-            SPACE(NUB2); cout << "Du lieu khong hop le, tu dong thoat!";
-            exit(0);
-        }
     }
 }
